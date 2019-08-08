@@ -1,5 +1,5 @@
 # mycrytocharts
-Simple web app to track prices of 3 crypto currencies for past week
+Simple web app to track prices of some crypto currencies one week into the past
 
 ## Requirements
 * Node.JS
