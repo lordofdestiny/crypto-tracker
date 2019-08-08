@@ -1,0 +1,36 @@
+{
+  "name": "mycrytocharts",
+  "version": "1.0.0",
+  "description": "App to track value of BTC , ETH and XRP coins over the past week",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheNinthOne/mycrytocharts.git"
+  },
+  "keywords": [
+    "Charts",
+    "Cryto",
+    "BTC",
+    "ETH",
+    "XRP",
+    "coin"
+  ],
+  "author": "TheNinthOne",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheNinthOne/mycrytocharts/issues"
+  },
+  "homepage": "https://github.com/TheNinthOne/mycrytocharts#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.1"
+  }
+}
