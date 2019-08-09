@@ -78,40 +78,41 @@ const myChart = new Chart(ctx, {
 });
 
 async function newLine(chart) {
-  const coinId = sessionStorage.getItem("coinId");
-  const request = axios({ method: "get", url: `/data/${coinId}` });
+  return new Promise(async (resolve, reject) => {
+    const coinId = sessionStorage.getItem("coinId");
+    const request = axios({ method: "get", url: `/data/${coinId}` });
 
-  try {
-    const response = await request;
-    const { prices } = response.data;
-    const chartData = prices.reduce(
-      (acc, pair) => {
-        acc.dates.push(moment(pair[0]));
-        acc.data.push(pair[1]);
-        return acc;
-      },
-      { dates: [], data: [] }
-    );
+    try {
+      const response = await request;
+      const { prices } = response.data;
+      const chartData = prices.reduce(
+        (acc, pair) => {
+          acc.dates.push(moment(pair[0]));
+          acc.data.push(pair[1]);
+          return acc;
+        },
+        { dates: [], data: [] }
+      );
 
-    const borderColor = await getColor();
+      const borderColor = await getColor();
 
-    const label = sessionStorage.getItem("symbol");
+      const label = sessionStorage.getItem("symbol");
 
-    const newDataset = Object.assign(defaultDataset, {
-      label,
-      data: chartData.data,
-      borderColor
-    });
+      const newDataset = Object.assign(defaultDataset, {
+        label,
+        data: chartData.data,
+        borderColor
+      });
 
-    myChart.data.labels = chartData.dates;
-    myChart.data.datasets.push(newDataset);
-    myChart.update();
-  } catch (error) {
-    console.log(error);
-  }
+      myChart.data.labels = chartData.dates;
+      myChart.data.datasets.push(newDataset);
+      myChart.update();
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
-
-newLine(myChart);
 
 async function getColor() {
   return new Promise(async (resolve, reject) => {
@@ -128,3 +129,18 @@ async function getColor() {
     }
   });
 }
+
+function resize() {
+  $("#myChart").outerHeight(
+    $(window).height() -
+      $("#canvas").offset().top -
+      Math.abs($("#canvas").outerHeight(true) - $("#canvas").outerHeight())
+  );
+}
+
+$(document).ready(function() {
+  resize();
+  $(window).on("resize", function() {
+    resize();
+  });
+});
