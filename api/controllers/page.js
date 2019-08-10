@@ -3,7 +3,7 @@ const axios = require("axios");
 require("dotenv").config();
 const api = process.env.API;
 
-const { ids } = require("../coins");
+const utils = require("../../utils/utils");
 
 const page_index = async (req, res) => {
   const promises = ids.map(id => {
@@ -46,12 +46,13 @@ const page_index = async (req, res) => {
   });
 };
 
-const page_chart = async (req, res) => {
+const page_chart = async (req, res, next) => {
   const { coinId } = req.params;
-  if (!ids.includes(coinId)) {
-    const error = new Error("Request Failed - Not Found");
-    error.status = 404;
-    res.render("error", { error });
+  if (!utils.coins.checkCoinId(coinId)) {
+    const err = new Error("Request failed - Bad Coin Id");
+    err.status = 422;
+    res.locals.err = err;
+    next();
     return;
   }
   //Get coin name
@@ -67,13 +68,14 @@ const page_chart = async (req, res) => {
   });
 
   try {
-    const { name, image, symbol } = response.data;
+    const { name, image, symbol, market_data } = response.data;
     const coinName = name[0].toUpperCase() + name.slice(1); //Change later
     res.render("chart", {
       chart: true,
       bootstrap: true,
       extendTitle: coinName,
       image: image.small,
+      value: market_data.current_price.usd,
       symbol,
       coinName
     });

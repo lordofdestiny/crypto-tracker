@@ -1,7 +1,14 @@
+const utils = require("../../utils/utils");
+
 const error_not_found = (req, res, next) => {
-  const error = new Error("Not found");
-  error.status = 404;
-  next(error);
+  const { err } = res.locals;
+  console.log(res.locals.err);
+  if (err) next(err);
+  else {
+    const error = new Error(`Request failed - Not found`);
+    error.status = 404;
+    next(error);
+  }
 };
 
 const error_not_catched = (error, req, res, next) => {

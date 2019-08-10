@@ -2,14 +2,15 @@ const axios = require("axios");
 
 const api = process.env.API;
 
-const { ids } = require("../coins");
+const utils = require("../../utils/utils");
 
-const data_chart = async (req, res) => {
+const data_chart = async (req, res, next) => {
   const { coinId } = req.params;
-  if (!ids.includes(coinId)) {
-    const error = new Error("Request Failed - Not Found");
-    error.status = 404;
-    res.render("error", { error });
+  if (!utils.coins.checkCoinId(coinId)) {
+    const err = new Error("Request failed - Bad Coin Id");
+    err.status = 422;
+    res.locals.err = err;
+    next();
     return;
   }
   const request = axios({
@@ -28,22 +29,15 @@ const data_chart = async (req, res) => {
   }
 };
 
-const data_color = async (req, res) => {
-  const request = axios({
-    method: "get",
-    url: "http://www.colr.org/json/color/random"
-  });
-  try {
-    const response = await request;
-    const color = `#${response.data.colors[0].hex}`;
-    res.json({ color });
-  } catch (error) {
-    res.json({ color: "#fc03f8" });
-  }
-};
-
-const data_symbol = async (req, res) => {
+const data_symbol = async (req, res, next) => {
   const { coinId } = req.params;
+  if (!utils.coins.checkCoinId(coinId)) {
+    const err = new Error("Request failed - Bad Coin Id");
+    err.status = 422;
+    res.locals.err = err;
+    next();
+    return;
+  }
   const request = axios({
     method: "get",
     url: `${api}/coins/${coinId}`,
@@ -63,4 +57,31 @@ const data_symbol = async (req, res) => {
   }
 };
 
-module.exports = { data_chart, data_color, data_symbol };
+const data_value = async (req, res, next) => {
+  const { coinId } = req.params;
+  if (!utils.coins.checkCoinId(coinId)) {
+    const err = new Error("Request failed - Bad Coin Id");
+    err.status = 422;
+    res.locals.err = err;
+    next();
+    return;
+  }
+  const { currency } = req.query;
+  const request = axios({
+    method: "get",
+    url: `${api}/simple/price`,
+    params: {
+      ids: coinId,
+      vs_currencies: currency
+    }
+  });
+  try {
+    const response = await request;
+    const value = response.data[coinId][currency];
+    res.json({ value });
+  } catch (error) {
+    console.log(error.data);
+  }
+};
+
+module.exports = { data_chart, data_symbol, data_value };

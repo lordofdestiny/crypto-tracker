@@ -1,19 +1,3 @@
-const { pathname } = window.location;
-const start = pathname.lastIndexOf("/");
-const coin = pathname.slice(start + 1);
-
-sessionStorage.setItem("coinId", coin);
-
-axios
-  .get(`/data/${coin}/symbol`)
-  .then(response => {
-    const { symbol } = response.data;
-    sessionStorage.setItem("symbol", symbol.toUpperCase());
-  })
-  .catch(error => {
-    console.log(error);
-  });
-
 const ctx = document.getElementById("myChart");
 
 const defaultDataset = {
@@ -54,9 +38,7 @@ const myChart = new Chart(ctx, {
           gridLines: { borderDash: [5, 5] },
           ticks: {
             fontColor: "#007bff",
-            callback: function(value, index, values) {
-              return "$" + value.toLocaleString();
-            }
+            callback: (value, index, values) => "$" + value.toLocaleString()
           }
         }
       ],
@@ -65,10 +47,8 @@ const myChart = new Chart(ctx, {
           gridLines: { display: false },
           ticks: {
             fontColor: "#007bff",
-            callback: function(item, index) {
-              if (!(index % 24)) return item.format("Do MMM");
-              else return "";
-            },
+            callback: (item, index) =>
+              !(index % 24) ? item.format("Do MMM") : "",
             autoSkip: false
           }
         }
@@ -94,7 +74,7 @@ async function newLine(chart) {
         { dates: [], data: [] }
       );
 
-      const borderColor = await getColor();
+      const borderColor = getColor();
 
       const label = sessionStorage.getItem("symbol");
 
@@ -114,26 +94,10 @@ async function newLine(chart) {
   });
 }
 
-async function getColor() {
-  return new Promise(async (resolve, reject) => {
-    const request = axios({
-      method: "get",
-      url: "/data/misc/color"
-    });
-    try {
-      const response = await request;
-      const { color } = response.data;
-      resolve(color);
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
 function resize() {
   $("#myChart").outerHeight(
     $(window).height() -
-      $("#canvas").offset().top -
+      $("#myChart").offset().top -
       Math.abs($("#canvas").outerHeight(true) - $("#canvas").outerHeight())
   );
 }
