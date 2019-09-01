@@ -6,7 +6,7 @@ const api = process.env.API;
 const utils = require("../../utils/utils");
 
 const page_index = async (req, res) => {
-  const promises = ids.map(id => {
+  const promises = utils.coins.ids.map(id => {
     return new Promise(async (resolve, reject) => {
       const request = axios({
         method: "get",
