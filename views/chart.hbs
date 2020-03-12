@@ -1,7 +1,13 @@
 <div class="container">
     <header>
-        <h1 class="title"><img src="{{image}}" class="title-img" alt="{{symnol}}logo">{{coinName}} -
-            {{toUpperCase symbol}}</h1>
+        <h1 class="title"><img src="{{image}}" class="title-img" alt="{{symnol}}logo">
+            {{#if (equals coinName (toUpperCase symbol))}}
+                {{coinName}}
+            {{else}}
+                {{coinName}} -
+                {{toUpperCase symbol}}
+            {{/if}}
+            </h1>
         <p class="value" id="value">$ {{localeString value}}</p>
         <a class="home btn btn-primary" href="../../" role="button">Home</a>
     </header>
