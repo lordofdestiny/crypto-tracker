@@ -1,10 +1,23 @@
 <div class="container-fluid">
-    <h1 class="text-center main-heading">{{title}}</h1>
-    <br />
     <div class="row mx-auto">
         <div class="col-3-md col-sm"></div>
         <div class="col-6-lg col-6-md col-12-sm list-width">
-            <div class=" container-fluid">
+            <div class="container-fluid">
+                <div class="container-fluid d-flex flex-row align-items-center justify-content-between px-0">
+                    <h1 class="text-left main-heading">{{title}}</h1>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="sortButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{sortOptionName}}
+                        </button> 
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item" id="sortAscName" data-sortdir="ascname">Asc. Name</button>
+                            <button class="dropdown-item" id="sortDescName" data-sortdir="descname">Desc. Name</button>
+                            <button class="dropdown-item" id="sortAscVal" data-sortdir="ascval">Asc. Value</button>
+                            <button class="dropdown-item" id="sortDescVal" data-sortdir="descval">Desc. Value</button>
+                        </div>
+                    </div>
+                </div>
+                <br/>
                 <div class="list-group">
                     {{#each coinData}}
                     <a href="{{url}}" class="list-group-item d-flex list-group-item-action">

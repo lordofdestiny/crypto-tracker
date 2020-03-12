@@ -1,11 +1,41 @@
 const axios = require("axios");
 
-require("dotenv").config();
 const api = process.env.API;
 
 const utils = require("../../utils/utils");
 
+function getSort(sort) {
+  let sorter;
+  let name;
+  switch (sort) {
+    //Sort Ascending by Value
+    case "ascval":
+      sorter = (first, second) => first.value - second.value;
+      name = "Asc. Value";
+      break;
+    //Sort Descending by Value
+    case "descval":
+      sorter = (first, second) => second.value - first.value;
+      name = "Desc. Value";
+      break;
+    //Sort Descending by Name
+    case "descname":
+      sorter = (first, second) => (first.name < second.name ? 1 : -1);
+      name = "Desc. Name";
+      break;
+    //Sort Ascending by Name
+    case "ascname":
+    default:
+      sorter = (first, second) => (first.name > second.name ? 1 : -1);
+      name = "Asc. Name";
+      break;
+  }
+  return { sorter, name };
+}
+
 const page_index = async (req, res) => {
+  const { sort } = req.query;
+  const { name: sortName, sorter } = getSort(sort);
   const promises = utils.coins.ids.map(id => {
     return new Promise(async (resolve, reject) => {
       const request = axios({
@@ -39,10 +69,12 @@ const page_index = async (req, res) => {
   });
 
   const coinData = await Promise.all(promises);
+  coinData.sort(sorter);
 
   res.render("index", {
     bootstrap: true,
-    coinData
+    coinData,
+    sortOptionName: sortName
   });
 };
 
