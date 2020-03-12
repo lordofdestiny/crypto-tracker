@@ -2,8 +2,6 @@ const path = require("path");
 const morgan = require("morgan");
 const express = require("express");
 
-require("dotenv").config();
-
 //Middleware includes
 const errorMiddleware = require("./api/middleware/error");
 
