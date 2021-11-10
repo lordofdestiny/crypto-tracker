@@ -1,12 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-const f = fs
+module.exports = fs
   .readdirSync(__dirname, { withFileTypes: true })
   .filter(file => file.isDirectory())
   .map(folder => {
     const dir = path.join(__dirname, folder.name);
-    return fs.readdirSync(dir).filter(file => file == folder.name + ".js")[0];
+    return fs.readdirSync(dir).filter(file => file ===`${folder.name}.js`)[0];
   })
   .reduce((acc, file) => {
     if (file) {
@@ -15,5 +15,3 @@ const f = fs
     }
     return acc;
   }, {});
-
-module.exports = f;

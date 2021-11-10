@@ -32,6 +32,6 @@ app.use("/", pageRouter);
 app.use("/data", dataRouter);
 
 app.use(errorMiddleware.error_not_found);
-app.use(errorMiddleware.error_not_catched);
+app.use(errorMiddleware.error_not_caught);
 
 module.exports = app;

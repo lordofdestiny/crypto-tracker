@@ -64,7 +64,6 @@ const data_value = async (req, res, next) => {
     err.status = 422;
     res.locals.err = err;
     next();
-    return;
   }
   const { currency } = req.query;
   const request = axios({
@@ -80,7 +79,7 @@ const data_value = async (req, res, next) => {
     const value = response.data[coinId][currency];
     res.json({ value });
   } catch (error) {
-    console.log(error.data);
+    res.json(error);
   }
 };
 
