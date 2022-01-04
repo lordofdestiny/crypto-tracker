@@ -36,7 +36,7 @@ function getSort(sort) {
 const page_index = async (req, res) => {
   const { sort } = req.query;
   const { name: sortName, sorter } = getSort(sort);
-  const promises = utils.coins.ids.map(id => {
+  const promises = utils.coins.ids.map((id) => {
     return new Promise(async (resolve, reject) => {
       const request = axios({
         method: "get",
@@ -45,8 +45,8 @@ const page_index = async (req, res) => {
           localization: false,
           tickers: false,
           community_data: false,
-          developer_data: false
-        }
+          developer_data: false,
+        },
       });
 
       try {
@@ -58,7 +58,7 @@ const page_index = async (req, res) => {
           symbol: symbol.toUpperCase(),
           image: image.small,
           value: market_data.current_price.usd,
-          url: `/charts/${id}`
+          url: `/charts/${id}`,
         };
 
         resolve(obj);
@@ -72,9 +72,9 @@ const page_index = async (req, res) => {
   coinData.sort(sorter);
 
   res.render("index", {
-    bootstrap: true,
     coinData,
-    sortOptionName: sortName
+    bootstrap: true,
+    sortOptionName: sortName,
   });
 };
 
@@ -95,8 +95,8 @@ const page_chart = async (req, res, next) => {
       localization: false,
       tickers: false,
       community_data: false,
-      developer_data: false
-    }
+      developer_data: false,
+    },
   });
 
   try {
@@ -109,7 +109,7 @@ const page_chart = async (req, res, next) => {
       image: image.small,
       value: market_data.current_price.usd,
       symbol,
-      coinName
+      coinName,
     });
   } catch (error) {
     console.log(error);
