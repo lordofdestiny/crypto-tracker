@@ -10,7 +10,7 @@ const error_not_found = (req, res, next) => {
 
 const error_not_caught = (error, req, res, next) => {
   if (!error.status) error.status = 500;
-  res.status(error.status);
+  //res.status(error.status);
   res.render("error", { title: "Error", error, stack: true });
   next();
 };

@@ -57,9 +57,11 @@ const page_index = async (req, res) => {
           name,
           symbol: symbol.toUpperCase(),
           image: image.small,
-          value: market_data.current_price.usd,
+          value: Math.floor(market_data.current_price.usd * 1000) / 1000,
           url: `/charts/${id}`,
         };
+
+        // console.log(obj.name, obj.value);
 
         resolve(obj);
       } catch (error) {

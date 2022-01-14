@@ -7,6 +7,11 @@
     "neo",
     "cardano",
     "eos",
-    "monero"
+    "monero",
+    "solana",
+    "hedera-hashgraph",
+    "tezos",
+    "shiba-inu",
+    "dogecoin"
   ]
 }

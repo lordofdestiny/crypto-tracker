@@ -1,3 +1,5 @@
+API=https://api.coingecko.com/api/v3
+PORT=8080
 const ipList = Object.values(require("os").networkInterfaces())
     		     .flat()
     		     .filter(({ family, internal }) => family === "IPv4" && !internal)
@@ -16,3 +18,5 @@ server.listen(port, () => {
 		console.log(`IP ${i + 1}: ${ipList[i]}`); 
 	}
 });
+
+console.log(process.env)
